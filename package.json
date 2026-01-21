@@ -1,0 +1,9 @@
+{
+  "name": "tomato-clock",
+  "version": "1.0.0",
+  "description": "Simple pomodoro timer preview server",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  }
+}

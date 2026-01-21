@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>番茄钟</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="timer-app">
+      <header class="timer-header">
+        <h1>番茄钟</h1>
+        <p class="timer-subtitle">专注工作，适度休息</p>
+      </header>
+
+      <section class="timer-display" aria-live="polite">
+        <span id="session-label">工作时间</span>
+        <div id="time-remaining">25:00</div>
+      </section>
+
+      <section class="timer-controls" aria-label="计时器控制">
+        <button id="start-btn" class="primary">开始</button>
+        <button id="pause-btn">暂停</button>
+        <button id="reset-btn" class="ghost">重置</button>
+      </section>
+
+      <section class="mode-controls" aria-label="模式切换">
+        <button id="work-btn" class="mode active">工作 25 分钟</button>
+        <button id="break-btn" class="mode">休息 5 分钟</button>
+      </section>
+
+      <p class="timer-note">倒计时结束时会触发提醒。</p>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
