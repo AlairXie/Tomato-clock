@@ -17,6 +17,7 @@ let breakSeconds = DEFAULT_BREAK_SECONDS;
 let remainingSeconds = DEFAULT_WORK_MINUTES * 60;
 let activeMode = "work";
 let isRunning = false;
+let audioContext = null;
 
 const formatTime = (totalSeconds) => {
   const minutes = Math.floor(totalSeconds / 60);
@@ -54,13 +55,52 @@ const stopTimer = () => {
   isRunning = false;
 };
 
-const triggerAlert = () => {
-  window.alert("倒计时结束！");
+const playAlarm = () => {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) {
+    window.alert("倒计时结束！");
+    return;
+  }
+
+  if (!audioContext) {
+    audioContext = new AudioCtx();
+  }
+
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+  }
+
+  const startTime = audioContext.currentTime;
+  const beepSchedule = [
+    { offset: 0, duration: 0.2, frequency: 880 },
+    { offset: 0.3, duration: 0.2, frequency: 988 },
+    { offset: 0.6, duration: 0.35, frequency: 784 },
+  ];
+
+  beepSchedule.forEach(({ offset, duration, frequency }) => {
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    const beepStart = startTime + offset;
+    const beepEnd = beepStart + duration;
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, beepStart);
+
+    gainNode.gain.setValueAtTime(0.0001, beepStart);
+    gainNode.gain.exponentialRampToValueAtTime(0.2, beepStart + 0.02);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, beepEnd);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    oscillator.start(beepStart);
+    oscillator.stop(beepEnd);
+  });
 };
 
 const tick = () => {
   if (remainingSeconds <= 0) {
-    triggerAlert();
+    playAlarm();
     setMode(activeMode === "work" ? "break" : "work");
     return;
   }
