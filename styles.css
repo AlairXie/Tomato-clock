@@ -80,6 +80,7 @@ body {
   font-size: 14px;
 }
 
+#work-minutes,
 #break-seconds {
   width: 120px;
   border: 1px solid #c8d2ee;
@@ -90,6 +91,7 @@ body {
   color: #2a3760;
 }
 
+#work-minutes:focus-visible,
 #break-seconds:focus-visible {
   outline: 3px solid rgba(98, 125, 255, 0.35);
   border-color: #5f7bff;

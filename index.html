@@ -25,11 +25,13 @@
       </section>
 
       <section class="mode-controls" aria-label="模式切换">
-        <button id="work-btn" class="mode active">工作 25 分钟</button>
+        <button id="work-btn" class="mode active">工作 1 分钟</button>
         <button id="break-btn" class="mode">休息 30 秒</button>
       </section>
 
       <section class="duration-controls" aria-label="时长设置">
+        <label for="work-minutes">工作时长（分钟）</label>
+        <input id="work-minutes" type="number" min="1" step="1" value="1" />
         <label for="break-seconds">休息时长（秒）</label>
         <input id="break-seconds" type="number" min="1" step="1" value="30" />
       </section>

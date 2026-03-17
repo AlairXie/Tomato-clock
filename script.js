@@ -1,4 +1,4 @@
-const DEFAULT_WORK_MINUTES = 25;
+const DEFAULT_WORK_MINUTES = 1;
 const DEFAULT_BREAK_SECONDS = 30;
 
 const timeRemaining = document.getElementById("time-remaining");
@@ -8,9 +8,11 @@ const pauseButton = document.getElementById("pause-btn");
 const resetButton = document.getElementById("reset-btn");
 const workButton = document.getElementById("work-btn");
 const breakButton = document.getElementById("break-btn");
+const workMinutesInput = document.getElementById("work-minutes");
 const breakSecondsInput = document.getElementById("break-seconds");
 
 let timerId = null;
+let workMinutes = DEFAULT_WORK_MINUTES;
 let breakSeconds = DEFAULT_BREAK_SECONDS;
 let remainingSeconds = DEFAULT_WORK_MINUTES * 60;
 let activeMode = "work";
@@ -26,6 +28,10 @@ const updateDisplay = () => {
   timeRemaining.textContent = formatTime(remainingSeconds);
 };
 
+const updateWorkButtonLabel = () => {
+  workButton.textContent = `工作 ${workMinutes} 分钟`;
+};
+
 const updateBreakButtonLabel = () => {
   breakButton.textContent = `休息 ${breakSeconds} 秒`;
 };
@@ -33,7 +39,7 @@ const updateBreakButtonLabel = () => {
 const setMode = (mode) => {
   activeMode = mode;
   const isWork = mode === "work";
-  remainingSeconds = isWork ? DEFAULT_WORK_MINUTES * 60 : breakSeconds;
+  remainingSeconds = isWork ? workMinutes * 60 : breakSeconds;
   sessionLabel.textContent = isWork ? "工作时间" : "休息时间";
   workButton.classList.toggle("active", isWork);
   breakButton.classList.toggle("active", !isWork);
@@ -54,10 +60,11 @@ const triggerAlert = () => {
 
 const tick = () => {
   if (remainingSeconds <= 0) {
-    stopTimer();
     triggerAlert();
+    setMode(activeMode === "work" ? "break" : "work");
     return;
   }
+
   remainingSeconds -= 1;
   updateDisplay();
 };
@@ -77,6 +84,24 @@ const pauseTimer = () => {
 const resetTimer = () => {
   stopTimer();
   setMode(activeMode);
+};
+
+const handleWorkDurationChange = () => {
+  const parsedValue = Number.parseInt(workMinutesInput.value, 10);
+  if (Number.isNaN(parsedValue) || parsedValue < 1) {
+    workMinutes = DEFAULT_WORK_MINUTES;
+    workMinutesInput.value = String(DEFAULT_WORK_MINUTES);
+  } else {
+    workMinutes = parsedValue;
+    workMinutesInput.value = String(parsedValue);
+  }
+
+  updateWorkButtonLabel();
+
+  if (activeMode === "work") {
+    stopTimer();
+    setMode("work");
+  }
 };
 
 const handleBreakDurationChange = () => {
@@ -111,8 +136,11 @@ breakButton.addEventListener("click", () => {
   setMode("break");
 });
 
+workMinutesInput.addEventListener("change", handleWorkDurationChange);
+workMinutesInput.addEventListener("blur", handleWorkDurationChange);
 breakSecondsInput.addEventListener("change", handleBreakDurationChange);
 breakSecondsInput.addEventListener("blur", handleBreakDurationChange);
 
+updateWorkButtonLabel();
 updateBreakButtonLabel();
 updateDisplay();
