@@ -63,6 +63,39 @@ body {
   letter-spacing: 4px;
 }
 
+.custom-work-time {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+.custom-work-time label {
+  font-size: 14px;
+  color: #4e5b77;
+  font-weight: 600;
+}
+
+.custom-work-inputs {
+  display: flex;
+  gap: 10px;
+}
+
+.custom-work-inputs input {
+  width: 100%;
+  border: 1px solid #d8def2;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 15px;
+  color: #2a3760;
+  background: #ffffff;
+}
+
+.custom-work-inputs input:focus-visible {
+  outline: 3px solid rgba(98, 125, 255, 0.3);
+  border-color: #5f7bff;
+}
+
 .timer-controls,
 .mode-controls {
   display: flex;

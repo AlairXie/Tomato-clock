@@ -15,7 +15,15 @@
 
       <section class="timer-display" aria-live="polite">
         <span id="session-label">工作时间</span>
-        <div id="time-remaining">25:00</div>
+        <div id="time-remaining">01:00</div>
+      </section>
+
+      <section class="custom-work-time" aria-label="自定义工作时长">
+        <label for="work-minutes-input">工作时长（分钟）</label>
+        <div class="custom-work-inputs">
+          <input id="work-minutes-input" type="number" min="1" value="1" />
+          <button id="apply-work-minutes-btn" class="ghost">应用</button>
+        </div>
       </section>
 
       <section class="timer-controls" aria-label="计时器控制">
@@ -25,7 +33,7 @@
       </section>
 
       <section class="mode-controls" aria-label="模式切换">
-        <button id="work-btn" class="mode active">工作 25 分钟</button>
+        <button id="work-btn" class="mode active">工作 1 分钟</button>
         <button id="break-btn" class="mode">休息 5 分钟</button>
       </section>
 
