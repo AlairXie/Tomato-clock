@@ -1,5 +1,5 @@
 const DEFAULT_WORK_MINUTES = 25;
-const DEFAULT_BREAK_MINUTES = 5;
+const DEFAULT_BREAK_SECONDS = 30;
 
 const timeRemaining = document.getElementById("time-remaining");
 const sessionLabel = document.getElementById("session-label");
@@ -8,8 +8,10 @@ const pauseButton = document.getElementById("pause-btn");
 const resetButton = document.getElementById("reset-btn");
 const workButton = document.getElementById("work-btn");
 const breakButton = document.getElementById("break-btn");
+const breakSecondsInput = document.getElementById("break-seconds");
 
 let timerId = null;
+let breakSeconds = DEFAULT_BREAK_SECONDS;
 let remainingSeconds = DEFAULT_WORK_MINUTES * 60;
 let activeMode = "work";
 let isRunning = false;
@@ -24,10 +26,14 @@ const updateDisplay = () => {
   timeRemaining.textContent = formatTime(remainingSeconds);
 };
 
+const updateBreakButtonLabel = () => {
+  breakButton.textContent = `休息 ${breakSeconds} 秒`;
+};
+
 const setMode = (mode) => {
   activeMode = mode;
   const isWork = mode === "work";
-  remainingSeconds = (isWork ? DEFAULT_WORK_MINUTES : DEFAULT_BREAK_MINUTES) * 60;
+  remainingSeconds = isWork ? DEFAULT_WORK_MINUTES * 60 : breakSeconds;
   sessionLabel.textContent = isWork ? "工作时间" : "休息时间";
   workButton.classList.toggle("active", isWork);
   breakButton.classList.toggle("active", !isWork);
@@ -73,6 +79,24 @@ const resetTimer = () => {
   setMode(activeMode);
 };
 
+const handleBreakDurationChange = () => {
+  const parsedValue = Number.parseInt(breakSecondsInput.value, 10);
+  if (Number.isNaN(parsedValue) || parsedValue < 1) {
+    breakSeconds = DEFAULT_BREAK_SECONDS;
+    breakSecondsInput.value = String(DEFAULT_BREAK_SECONDS);
+  } else {
+    breakSeconds = parsedValue;
+    breakSecondsInput.value = String(parsedValue);
+  }
+
+  updateBreakButtonLabel();
+
+  if (activeMode === "break") {
+    stopTimer();
+    setMode("break");
+  }
+};
+
 startButton.addEventListener("click", startTimer);
 pauseButton.addEventListener("click", pauseTimer);
 resetButton.addEventListener("click", resetTimer);
@@ -87,4 +111,8 @@ breakButton.addEventListener("click", () => {
   setMode("break");
 });
 
+breakSecondsInput.addEventListener("change", handleBreakDurationChange);
+breakSecondsInput.addEventListener("blur", handleBreakDurationChange);
+
+updateBreakButtonLabel();
 updateDisplay();

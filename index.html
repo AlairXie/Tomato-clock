@@ -26,7 +26,12 @@
 
       <section class="mode-controls" aria-label="模式切换">
         <button id="work-btn" class="mode active">工作 25 分钟</button>
-        <button id="break-btn" class="mode">休息 5 分钟</button>
+        <button id="break-btn" class="mode">休息 30 秒</button>
+      </section>
+
+      <section class="duration-controls" aria-label="时长设置">
+        <label for="break-seconds">休息时长（秒）</label>
+        <input id="break-seconds" type="number" min="1" step="1" value="30" />
       </section>
 
       <p class="timer-note">倒计时结束时会触发提醒。</p>
